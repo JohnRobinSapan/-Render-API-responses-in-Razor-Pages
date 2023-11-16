@@ -23,30 +23,47 @@ namespace FruitWebApp.Pages
         // Begin POST operation code
         public async Task<IActionResult> OnPost()
         {
-            // Serialize the information to be added to the database
-            var jsonContent = new StringContent(JsonSerializer.Serialize(FruitModels),
-                Encoding.UTF8,
-                "application/json");
-
-            // Create the HTTP client using the FruitAPI named factory
-            var httpClient = _httpClientFactory.CreateClient("FruitAPI");
-
-            // Execute the POST request and store the response. The parameters in PostAsync 
-            // direct the POST to use the base address and passes the serialized data to the API
-            using HttpResponseMessage response = await httpClient.PostAsync("", jsonContent);
-
-            // Return to the home (Index) page and add a temporary success/failure 
-            // message to the page.
-            if (response.IsSuccessStatusCode)
+            try
             {
-                TempData["success"] = "Data was added successfully.";
-                return RedirectToPage("Index");
+                // Serialize the information to be added to the database
+                var jsonContent = new StringContent(JsonSerializer.Serialize(FruitModels),
+                    Encoding.UTF8,
+                    "application/json");
+
+                // Create the HTTP client using the FruitAPI named factory
+                var httpClient = _httpClientFactory.CreateClient("FruitAPI");
+
+                // Execute the POST request and store the response. The parameters in PostAsync 
+                // direct the POST to use the base address and passes the serialized data to the API
+                using HttpResponseMessage response = await httpClient.PostAsync("", jsonContent);
+
+                // Return to the home (Index) page and add a temporary success/failure 
+                // message to the page.
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["success"] = "Data was added successfully.";
+                }
+                else
+                {
+                    TempData["failure"] = "Operation was not successful";
+                }
             }
-            else
+            catch (HttpRequestException ex)
             {
-                TempData["failure"] = "Operation was not successful";
-                return RedirectToPage("Index");
+                // Log the exception
+                // _logger.LogError(ex, "Error making HTTP request to FruitAPI");
+
+                // To implement error message 
+                // TempData["failure"] = $"There was an error connecting to the FruitAPI. Please try again later.\n{ex.Message}";
+
+
+                // Return a specific HTTP status code if needed if return type is IActionResult
+                // return StatusCode(500, "Internal Server Error");
+
+                // Optionally, re-throw the exception to allow it to propagate up
+                // throw;
             }
+            return RedirectToPage("Index");
         }
         // End POST operation code
     }

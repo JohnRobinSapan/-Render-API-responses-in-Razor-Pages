@@ -23,6 +23,7 @@ namespace FruitWebApp.Pages
         // Retrieve the data to populate the form for deletion
         public async Task OnGet(int id)
         {
+            // To implement error handling
 
             // Create the HTTP client using the FruitAPI named factory
             var httpClient = _httpClientFactory.CreateClient("FruitAPI");
@@ -42,6 +43,8 @@ namespace FruitWebApp.Pages
 		// Begin DELETE operation code
         public async Task<IActionResult> OnPost()
 		{
+            // To implement error handling
+            
  			// Create the HTTP client using the FruitAPI named factory
             var httpClient = _httpClientFactory.CreateClient("FruitAPI");
 

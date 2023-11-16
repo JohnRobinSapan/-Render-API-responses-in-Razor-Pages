@@ -23,6 +23,7 @@ namespace FruitWebApp.Pages
         // Retrieve the data to populate the form for editing
         public async Task OnGet(int id)
         {
+            // To implement error handling
  
             // Create the HTTP client using the FruitAPI named factory
             var httpClient = _httpClientFactory.CreateClient("FruitAPI");
@@ -42,6 +43,8 @@ namespace FruitWebApp.Pages
 		// Begin PUT operation code
         public async Task<IActionResult> OnPost()
 		{
+            // To implement error handling
+
             // Serialize the information to be edited in the database
             var jsonContent = new StringContent(JsonSerializer.Serialize(FruitModels),
                 Encoding.UTF8,
